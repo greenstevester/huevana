@@ -183,6 +183,73 @@ hue.getRoomByName("room name").get()
         .on());
 ```
 
+### Creating dynamic lighting effects
+
+The library supports creating smooth, dynamic lighting effects using the `PulsingEffect` class. This creates a breathing/pulsing effect by gradually changing the brightness between minimum and maximum values.
+
+#### Pulsing Effect
+
+Create a smooth pulsing effect with configurable brightness range:
+
+[//]: # (requires-init)
+[//]: # (import io.github.greenstevester.heuvana.v2.PulsingEffect;)
+[//]: # (import java.time.Duration;)
+```java
+// Get a light from your room
+Light light = hue.getRoomByName("Kitchen")
+    .flatMap(room -> room.getLightByName("Kitchen-Island"))
+    .orElseThrow();
+
+// Create a pulsing effect that breathes from 10% to 90% brightness
+PulsingEffect.builder()
+    .light(light)
+    .minBrightness(10)              // Minimum brightness (1-100)
+    .maxBrightness(90)              // Maximum brightness (1-100)
+    .pulseDuration(Duration.ofMillis(2000))  // 2 seconds per pulse cycle
+    .pulseCount(5)                  // Number of complete pulses
+    .preserveState(true)            // Restore original state when done
+    .build()
+    .start();
+```
+
+#### Testing the Pulsing Effect
+
+A manual test class is provided to help you test the pulsing effect with your own Bridge:
+
+1. **Discover your Bridge** (if you don't know the IP):
+   ```java
+   Future<List<HueBridge>> bridgesFuture = new HueBridgeDiscoveryService()
+       .discoverBridges(bridge -> System.out.println("Found bridge: " + bridge));
+   List<HueBridge> bridges = bridgesFuture.get();
+   String bridgeIp = bridges.get(0).getIp();
+   ```
+
+2. **Initialize an API connection** (if you don't have an API key):
+   ```java
+   String apiKey = new HueBridgeConnectionBuilder(bridgeIp)
+       .initializeApiConnection("MyHueApp").get();
+   System.out.println("Save this API key: " + apiKey);
+   ```
+
+3. **Update the test file**: Open `PulsingEffectManualTest.java` and replace the placeholder values:
+   ```java
+   final String bridgeIp = "10.0.0.101";  // Your bridge IP here
+   final String apiKey = "your-api-key-here";  // Your API key here
+   ```
+
+4. **Run the test**:
+   ```bash
+   mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.v2.PulsingEffectManualTest" \
+                 -Dexec.classpathScope=test
+   ```
+
+The test will pulse your "Kitchen-Island" light from 10% to 90% brightness for 5 cycles. You can pass different parameters:
+```bash
+mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.v2.PulsingEffectManualTest" \
+              -Dexec.classpathScope=test \
+              -Dexec.args="\"Living Room Lamp\" 5 100"
+```
+
 ### Lights that belong to a room or a zone
 
 Note that in the context of this library both rooms and zones are collectively called _groups_:
