@@ -214,30 +214,31 @@ PulsingEffect.builder()
 
 #### Testing the Pulsing Effect
 
-A manual test class is provided to help you test the pulsing effect with your own Bridge:
+Manual test classes are provided to help you set up and test the pulsing effect with your own Bridge.
 
-1. **Discover your Bridge** (if you don't know the IP):
-   ```java
-   Future<List<HueBridge>> bridgesFuture = new HueBridgeDiscoveryService()
-       .discoverBridges(bridge -> System.out.println("Found bridge: " + bridge));
-   List<HueBridge> bridges = bridgesFuture.get();
-   String bridgeIp = bridges.get(0).getIp();
+**First-time setup:**
+
+1. **Run the bridge setup test** to discover your bridge and get an API key:
+   ```bash
+   mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.v2.BridgeSetupManualTest" \
+                 -Dexec.classpathScope=test
    ```
 
-2. **Initialize an API connection** (if you don't have an API key):
-   ```java
-   String apiKey = new HueBridgeConnectionBuilder(bridgeIp)
-       .initializeApiConnection("MyHueApp").get();
-   System.out.println("Save this API key: " + apiKey);
-   ```
+   This will:
+   - Automatically discover your Hue Bridge on the network
+   - Prompt you to press the button on your bridge
+   - Display your bridge IP and API key
+   - Verify the connection works
 
-3. **Update the test file**: Open `PulsingEffectManualTest.java` and replace the placeholder values:
+2. **Copy the configuration values** displayed by the setup test
+
+3. **Update PulsingEffectManualTest.java** with your values:
    ```java
    final String bridgeIp = "10.0.0.101";  // Your bridge IP here
    final String apiKey = "your-api-key-here";  // Your API key here
    ```
 
-4. **Run the test**:
+4. **Run the pulsing effect test**:
    ```bash
    mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.v2.PulsingEffectManualTest" \
                  -Dexec.classpathScope=test

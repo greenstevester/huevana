@@ -15,11 +15,13 @@ import java.util.Optional;
  *
  * <p>To run this test:</p>
  * <ol>
- *   <li>Discover your Hue Bridge using {@link io.github.greenstevester.heuvana.discovery.HueBridgeDiscoveryService}</li>
- *   <li>Initialize an API connection using {@link io.github.greenstevester.heuvana.HueBridgeConnectionBuilder}</li>
- *   <li>Update the bridgeIp and apiKey constants in this file with your values</li>
+ *   <li>Run {@link BridgeSetupManualTest} first to discover your bridge and get your API key</li>
+ *   <li>Copy the bridgeIp and apiKey values displayed by the setup test</li>
+ *   <li>Update the bridgeIp and apiKey constants in this file (lines 28-29)</li>
  *   <li>Run via: {@code mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.v2.PulsingEffectManualTest" -Dexec.classpathScope=test}</li>
  * </ol>
+ *
+ * @see BridgeSetupManualTest for getting your bridge IP and API key
  */
 @Disabled("Manual test - requires bridge IP and API key configuration")
 public class PulsingEffectManualTest {
