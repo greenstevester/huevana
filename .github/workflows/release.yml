@@ -73,6 +73,7 @@ jobs:
         fi
 
     - name: Check if tag exists
+      if: github.event_name == 'workflow_dispatch'
       run: |
         VERSION="${{ steps.version.outputs.version }}"
         if git rev-parse "v$VERSION" >/dev/null 2>&1; then
