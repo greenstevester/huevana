@@ -122,13 +122,39 @@ public class UpdateState {
   }
 
   /**
-   * Alerts, i.e. flashes the light a few times.
+   * Alerts, i.e. flashes the light a few times using breathe effect.
    *
    * @return This state, for easy chaining of different methods.
+   * @see #flash()
+   * @see #pulse()
    */
   public UpdateState alert() {
     updateLight.setAlert(new Alert().setAction(AlertType.BREATHE));
     return this;
+  }
+
+  /**
+   * Alias for {@link #alert()} - flashes the light a few times.
+   * Uses the Philips Hue "breathe" alert which creates a pulsing flash effect.
+   *
+   * @return This state, for easy chaining of different methods.
+   * @see #alert()
+   * @see #pulse()
+   */
+  public UpdateState flash() {
+    return alert();
+  }
+
+  /**
+   * Alias for {@link #alert()} - creates a pulsing effect on the light.
+   * Uses the Philips Hue "breathe" alert which creates a gentle pulsing effect.
+   *
+   * @return This state, for easy chaining of different methods.
+   * @see #alert()
+   * @see #flash()
+   */
+  public UpdateState pulse() {
+    return alert();
   }
 
   /**
