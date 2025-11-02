@@ -27,8 +27,8 @@ import java.util.concurrent.Future;
  *
  * <p>The output will show you the values to use in {@link PulsingEffectManualTest}:</p>
  * <pre>
- * Bridge IP: 10.0.0.101
- * API Key: BfBT1mUW6KbE7crFvAD8b5SB9TP3zdodWgWBPhd5
+ * Bridge IP: 192.168.1.100
+ * API Key: YourApiKeyWillAppearHere...
  * </pre>
  */
 @Disabled("Manual test - requires user interaction with physical bridge")

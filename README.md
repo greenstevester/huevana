@@ -3,12 +3,11 @@ huevana - a modern Java Library for Philips Hue
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.greenstevester/huevana.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.greenstevester%22%20AND%20a:%22huevana%22)
 [![javadoc](https://javadoc.io/badge2/io.github.greenstevester/huevana/javadoc.svg)](https://javadoc.io/doc/io.github.greenstevester/huevana)
 
-A modern Java 17 library for controlling Philips Hue lights. This library accesses
+A modern Java library for controlling Philips Hue lights. This library accesses
 the REST API of the Philips Hue Bridge directly without using the official Hue SDK.
 
 ## Prerequisites
 - **Java 17 or higher** (updated from Java 8 for modern language features)
-- GPG
 - Philips Hue Bridge (API v2 recommended)
 - This library works with Android projects using API level 24 or higher
 - Last confirmed compatible with Philips Hue Bridge API in August 2025
@@ -16,8 +15,8 @@ the REST API of the Philips Hue Bridge directly without using the official Hue S
 ----
 
 **NOTE: Philips has announced that plain HTTP connections with the bridges will be disabled and
-replaced with HTTPS only. HTTPS connections are the default for this library only from version *2.5.0* onwards.
-Make sure your dependency version is up to date.**
+replaced with HTTPS only. HTTPS connections are the default for this library.
+**
 
 ----
 
@@ -29,7 +28,7 @@ Add the following dependency to your `pom.xml` file if you are using Maven:
 <dependency>
     <groupId>io.github.greenstevester</groupId>
     <artifactId>huevana</artifactId>
-    <version>4.0.0</version>
+    <version>5.0.2</version>
 </dependency>
 ```
 
@@ -47,30 +46,110 @@ dependencies {
 
 ## Quick Start
 
-Here's a simple example to get you started - discover your bridge and turn on a light:
+The fastest way to test huevana with your Hue Bridge is to run the interactive Quick Start Demo:
+
+### Step 1: Discover Your Bridge and Get API Key
+
+If you don't have your bridge IP and API key yet:
+
+```bash
+mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.v2.BridgeSetupManualTest" \
+  -Dexec.classpathScope=test
+```
+
+This will:
+1. Automatically discover your Hue Bridge
+2. Prompt you to press the button on your bridge
+3. Generate an API key
+4. Display your bridge IP and API key
+
+### Step 2: Run the Interactive Demo
+
+Once you have your bridge IP and API key, run the demo:
+
+```bash
+mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.QuickStartDemo" \
+  -Dexec.classpathScope=test \
+  -Dexec.args="<your-bridge-ip> <your-api-key>"
+```
+
+**Example:**
+```bash
+mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.QuickStartDemo" \
+  -Dexec.classpathScope=test \
+  -Dexec.args="192.168.1.100 abc123xyz456"
+```
+
+The demo will:
+1. Connect to your bridge
+2. List all your lights
+3. Let you choose a light
+4. Run a pulsing effect on the selected light
+
+**What you'll see:**
+```
+╔════════════════════════════════════════════════╗
+║           Huevana Quick Start Demo            ║
+╚════════════════════════════════════════════════╝
+
+📡 Connecting to Hue Bridge at 192.168.1.100...
+✓ Connected successfully!
+
+💡 Available Lights:
+─────────────────────────────────────────────────
+ 1. Kitchen Island               [ON]
+ 2. Living Room Ceiling          [ON]
+ 3. Bedroom Lamp                 [OFF]
+
+Choose a light (1-3): 1
+
+✓ Selected: Kitchen Island
+
+✨ Running pulsing effect...
+─────────────────────────────────────────────────
+   Min Brightness: 10%
+   Max Brightness: 90%
+   Pulse Duration: 1 second
+   Pulse Count:    10 pulses
+
+Watch your light pulse! 💫
+```
+
+### Using huevana in Your Code
+
+Here's the equivalent code from the demo:
 
 ```java
-import io.github.greenstevester.heuvana.HueBridge;
-import io.github.greenstevester.heuvana.HueBridgeConnectionBuilder;
 import io.github.greenstevester.heuvana.v2.Hue;
-import io.github.greenstevester.heuvana.discovery.HueBridgeDiscoveryService;
-import java.util.List;
-import java.util.concurrent.Future;
+import io.github.greenstevester.heuvana.v2.Light;
+import io.github.greenstevester.heuvana.v2.PulsingEffect;
+import java.time.Duration;
+import java.util.concurrent.CountDownLatch;
 
-// Discover your Hue Bridge
-Future<List<HueBridge>> bridgesFuture = new HueBridgeDiscoveryService()
-    .discoverBridges(bridge -> System.out.println("Found bridge: " + bridge));
+// Connect to bridge
+Hue hue = new Hue("192.168.1.100", "your-api-key");
 
-List<HueBridge> bridges = bridgesFuture.get();
-String bridgeIp = bridges.get(0).getIp();
+// Get a light
+Light light = hue.getLightByName("Kitchen Island").orElseThrow();
 
-// Connect to bridge (press button on bridge first!)
-String apiKey = new HueBridgeConnectionBuilder(bridgeIp)
-    .initializeApiConnection("MyHueApp").get();
+// Create and run a pulsing effect
+CountDownLatch latch = new CountDownLatch(1);
 
-// Create Hue instance and control lights
-Hue hue = new Hue(bridgeIp, apiKey);
-hue.getRoomByName("Living Room").ifPresent(room -> room.turnOn());
+PulsingEffect.builder()
+    .light(light)
+    .minBrightness(10)
+    .maxBrightness(90)
+    .pulseDuration(Duration.ofMillis(1000))
+    .pulseCount(10)
+    .preserveState(true)
+    .onComplete(() -> {
+        System.out.println("Done!");
+        latch.countDown();
+    })
+    .build()
+    .start();
+
+latch.await(); // Wait for effect to complete
 ```
 
 ## Usage
@@ -234,8 +313,8 @@ Manual test classes are provided to help you set up and test the pulsing effect 
 
 3. **Update PulsingEffectManualTest.java** with your values:
    ```java
-   final String bridgeIp = "10.0.0.101";  // Your bridge IP here
-   final String apiKey = "your-api-key-here";  // Your API key here
+   final String bridgeIp = "192.168.1.100";  // Replace with your bridge IP
+   final String apiKey = "your-api-key-here";  // Replace with your API key
    ```
 
 4. **Run the pulsing effect test**:

@@ -125,3 +125,28 @@ $RECYCLE.BIN/
 
 # Output of "mvn dependency:tree > deps.tree"
 deps.tree
+
+### Sensitive Data ###
+# Never commit credential files
+*.key
+*.pem
+*.p12
+*.pfx
+.env
+.env.*
+secrets.yml
+secrets.properties
+
+# Maven settings with credentials
+settings.xml
+settings-security.xml
+
+# GPG keyrings (should use GPG agent instead)
+*.gpg
+*.asc
+secring.*
+pubring.*
+
+# Hue Bridge credentials (used in manual tests)
+bridge-config.properties
+hue-credentials.json
