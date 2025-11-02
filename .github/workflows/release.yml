@@ -81,6 +81,26 @@ jobs:
           exit 1
         fi
 
+    - name: Check if version exists on Maven Central
+      run: |
+        VERSION="${{ steps.version.outputs.version }}"
+        MAVEN_CENTRAL_URL="https://repo1.maven.org/maven2/io/github/greenstevester/huevana/$VERSION/"
+
+        echo "Checking if version $VERSION exists on Maven Central..."
+        HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$MAVEN_CENTRAL_URL")
+
+        if [ "$HTTP_STATUS" = "200" ]; then
+          echo "❌ Version $VERSION already exists on Maven Central!"
+          echo ""
+          echo "Maven Central URL: $MAVEN_CENTRAL_URL"
+          echo ""
+          echo "This version has already been published and cannot be re-released."
+          echo "Please increment the version number and try again."
+          exit 1
+        fi
+
+        echo "✓ Version $VERSION does not exist on Maven Central"
+
     - name: Run tests
       run: mvn $MAVEN_CLI_OPTS clean test
 
@@ -106,10 +126,12 @@ jobs:
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
     - name: Update version in POM
-      if: github.event_name == 'workflow_dispatch'
       run: |
         VERSION="${{ needs.validate-release.outputs.version }}"
+        echo "Updating POM to release version: $VERSION"
         mvn versions:set -DnewVersion=$VERSION -DgenerateBackupPoms=false
+        echo "Current POM version:"
+        grep "<version>" pom.xml | head -1
 
     - name: Build and package
       run: mvn $MAVEN_CLI_OPTS clean package -DskipTests
@@ -151,10 +173,12 @@ jobs:
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
     - name: Update version in POM
-      if: github.event_name == 'workflow_dispatch'
       run: |
         VERSION="${{ needs.validate-release.outputs.version }}"
+        echo "Updating POM to release version: $VERSION"
         mvn versions:set -DnewVersion=$VERSION -DgenerateBackupPoms=false
+        echo "Current POM version:"
+        grep "<version>" pom.xml | head -1
 
     - name: Verify credentials are set
       run: |
