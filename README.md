@@ -28,7 +28,7 @@ Add the following dependency to your `pom.xml` file if you are using Maven:
 <dependency>
     <groupId>io.github.greenstevester</groupId>
     <artifactId>huevana</artifactId>
-    <version>5.0.2</version>
+    <version>5.2.0</version>
 </dependency>
 ```
 
@@ -40,7 +40,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'io.github.greenstevester:huevana:4.0.0'
+  implementation 'io.github.greenstevester:huevana:5.2.0'
 }
 ```
 
