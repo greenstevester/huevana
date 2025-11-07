@@ -80,6 +80,19 @@ mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.QuickStartDemo"
   -Dexec.args="192.168.1.100 abc123xyz456"
 ```
 
+**Or create a convenience script** (recommended for repeated use):
+```bash
+# Copy the template
+cp run-demo.sh.template run-demo.sh
+
+# Edit with your credentials (run-demo.sh is in .gitignore)
+# Set BRIDGE_IP and API_KEY
+
+# Make executable and run
+chmod +x run-demo.sh
+./run-demo.sh
+```
+
 This comprehensive demo showcases all basic light control features:
 1. Connect to your bridge
 2. List all your lights

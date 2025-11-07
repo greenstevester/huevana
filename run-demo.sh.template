@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Quick Start Demo Runner Template
+#
+# Copy this file to run-demo.sh and fill in your credentials:
+#   cp run-demo.sh.template run-demo.sh
+#   chmod +x run-demo.sh
+#   # Edit run-demo.sh with your bridge IP and API key
+#   ./run-demo.sh
+#
+# Note: run-demo.sh is in .gitignore and will not be committed
+
+# Get your bridge IP:
+#   Run: mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.v2.BridgeSetupManualTest" \
+#                        -Dexec.classpathScope=test
+#
+# Get your API key:
+#   The BridgeSetupManualTest above will also generate an API key for you
+
+BRIDGE_IP="YOUR_BRIDGE_IP_HERE"
+API_KEY="YOUR_API_KEY_HERE"
+
+# Validate configuration
+if [ "$BRIDGE_IP" = "YOUR_BRIDGE_IP_HERE" ] || [ "$API_KEY" = "YOUR_API_KEY_HERE" ]; then
+    echo "❌ Error: Please edit this script and set your bridge IP and API key"
+    echo ""
+    echo "To get your credentials, run:"
+    echo "  mvn exec:java -Dexec.mainClass=\"io.github.greenstevester.heuvana.v2.BridgeSetupManualTest\" \\"
+    echo "                -Dexec.classpathScope=test"
+    echo ""
+    exit 1
+fi
+
+echo "╔════════════════════════════════════════════════╗"
+echo "║                                                ║"
+echo "║        Huevana Quick Start Demo Runner        ║"
+echo "║                                                ║"
+echo "╚════════════════════════════════════════════════╝"
+echo ""
+echo "Bridge IP: $BRIDGE_IP"
+echo "API Key: ${API_KEY:0:10}..."
+echo ""
+echo "Starting demo..."
+echo ""
+
+mvn exec:java \
+  -Dexec.mainClass="io.github.greenstevester.heuvana.QuickStartDemo" \
+  -Dexec.classpathScope=test \
+  -Dexec.args="$BRIDGE_IP $API_KEY"
