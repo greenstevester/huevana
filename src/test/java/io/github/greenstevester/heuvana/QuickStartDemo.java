@@ -27,7 +27,7 @@ import java.util.concurrent.CountDownLatch;
  *   <li>Setting brightness levels with smooth transitions</li>
  *   <li>Changing colors with smooth transitions</li>
  *   <li>Running a pulsing effect</li>
- *   <li>Demonstrating native Hue v2 effects (CANDLE)</li>
+ *   <li>Demonstrating all 10 native Hue v2 effects (FIRE, CANDLE, SPARKLE, PRISM, OPAL, GLISTEN, UNDERWATER, COSMOS, SUNBEAM, ENCHANT)</li>
  *   <li>Heartbeat effect (realistic heartbeat pattern)</li>
  * </ol>
  *
@@ -199,29 +199,52 @@ public class QuickStartDemo {
 
             waitForUser("Press Enter to continue...");
 
-            // Step 9: Demo native v2 effect
-            System.out.println("🕯️  Step 6: Native Hue v2 Effect");
+            // Step 6: Demo native v2 effects
+            System.out.println("🎭 Step 6: Native Hue v2 Effects");
             System.out.println("─────────────────────────────────────────────────");
-            System.out.println("   Effect: CANDLE");
-            System.out.println("   Duration: 8 seconds");
-            System.out.println("   Description: Flickering candle effect");
+            System.out.println("   Demonstrating all native Philips Hue effects");
+            System.out.println("   Each effect runs for 5 seconds");
             System.out.println();
-            System.out.println("Watch your light flicker like a candle! 🕯️");
+            System.out.println("Watch your light transform! ✨");
             System.out.println();
 
-            // Apply candle effect
-            selectedLight.setState(new UpdateState()
-                .color(Color.of(255, 147, 41))  // Warm orange
-                .brightness(60)
-                .effect(EffectType.CANDLE)
-                .on());
+            // Define effects to demonstrate with their descriptions and colors
+            final Object[][] effects = {
+                {EffectType.FIRE, "🔥 FIRE", "Cozy fireplace effect", Color.of(255, 80, 0), 70},
+                {EffectType.CANDLE, "🕯️  CANDLE", "Flickering candle effect", Color.of(255, 147, 41), 60},
+                {EffectType.SPARKLE, "✨ SPARKLE", "Sparkling light effect", Color.of(255, 255, 255), 80},
+                {EffectType.PRISM, "🌈 PRISM", "Prism color effects", Color.of(128, 0, 255), 70},
+                {EffectType.OPAL, "💎 OPAL", "Opal color shifts", Color.of(200, 200, 255), 60},
+                {EffectType.GLISTEN, "💫 GLISTEN", "Glistening shimmer effect", Color.of(255, 255, 200), 75},
+                {EffectType.UNDERWATER, "🌊 UNDERWATER", "Underwater bubble effect", Color.of(0, 150, 200), 65},
+                {EffectType.COSMOS, "🌌 COSMOS", "Cosmic space effect", Color.of(50, 0, 100), 70},
+                {EffectType.SUNBEAM, "☀️  SUNBEAM", "Warm sunbeam effect", Color.of(255, 220, 150), 85},
+                {EffectType.ENCHANT, "🔮 ENCHANT", "Magical enchanted effect", Color.of(180, 0, 180), 65}
+            };
 
-            // Let it run for 8 seconds
-            Thread.sleep(8000);
+            // Demonstrate each effect
+            for (Object[] effectData : effects) {
+                EffectType effectType = (EffectType) effectData[0];
+                String emoji = (String) effectData[1];
+                String description = (String) effectData[2];
+                Color color = (Color) effectData[3];
+                int brightness = (int) effectData[4];
+
+                System.out.println(emoji + " - " + description);
+
+                selectedLight.setState(new UpdateState()
+                    .color(color)
+                    .brightness(brightness)
+                    .effect(effectType)
+                    .on());
+
+                Thread.sleep(5000);
+            }
 
             // Stop the effect and restore light
             selectedLight.setState(new UpdateState().effect(EffectType.NO_EFFECT));
-            System.out.println("✓ Effect stopped!");
+            System.out.println();
+            System.out.println("✓ All effects demonstrated!");
 
             System.out.println();
 
@@ -265,13 +288,8 @@ public class QuickStartDemo {
             System.out.println("  ✓ Setting brightness (0-100%) with smooth transitions");
             System.out.println("  ✓ Changing colors with smooth transitions");
             System.out.println("  ✓ Pulsing effects");
-            System.out.println("  ✓ Native v2 effects (CANDLE)");
+            System.out.println("  ✓ Native v2 effects (all 10: FIRE, CANDLE, SPARKLE, PRISM, OPAL, GLISTEN, UNDERWATER, COSMOS, SUNBEAM, ENCHANT)");
             System.out.println("  ✓ Heartbeat effect");
-            System.out.println();
-            System.out.println("Available native v2 effects:");
-            System.out.println("  • FIRE, CANDLE, SPARKLE, PRISM");
-            System.out.println("  • OPAL, GLISTEN, UNDERWATER, COSMOS");
-            System.out.println("  • SUNBEAM, ENCHANT");
             System.out.println();
             System.out.println("Next steps:");
             System.out.println("  • Check out README.md for more examples");

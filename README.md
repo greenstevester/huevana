@@ -102,7 +102,7 @@ This comprehensive demo showcases all basic and advanced light control features:
 6. **Set brightness** - Show 10%, 100%, and 50% brightness levels with smooth transitions
 7. **Change colors** - Cycle through RED, GREEN, and BLUE with smooth transitions
 8. **Pulsing effect** - Smooth brightness animation
-9. **Native v2 effects** - Demonstrate CANDLE effect (many others available: FIRE, SPARKLE, PRISM, COSMOS, etc.)
+9. **Native v2 effects** - Demonstrate all 10 native Philips Hue effects (FIRE, CANDLE, SPARKLE, PRISM, OPAL, GLISTEN, UNDERWATER, COSMOS, SUNBEAM, ENCHANT)
 10. **Heartbeat effect** - Realistic two-beat heartbeat pattern
 
 **What you'll see:**
@@ -165,17 +165,25 @@ Setting color to BLUE...
 Watch your light pulse! 💫
 ✓ Pulsing effect complete!
 
-🕯️  Step 6: Native Hue v2 Effect (CANDLE)
+🎭 Step 6: Native Hue v2 Effects
 ─────────────────────────────────────────────────
-   Effect: CANDLE
-   Duration: 8 seconds
-   Description: Flickering candle effect
+   Demonstrating all native Philips Hue effects
+   Each effect runs for 5 seconds
 
-   Note: Many other effects are available (FIRE, SPARKLE,
-   PRISM, COSMOS, etc.) - see documentation below!
+Watch your light transform! ✨
 
-Watch your light flicker like a candle! 🕯️
-✓ Effect stopped!
+🔥 FIRE - Cozy fireplace effect
+🕯️  CANDLE - Flickering candle effect
+✨ SPARKLE - Sparkling light effect
+🌈 PRISM - Prism color effects
+💎 OPAL - Opal color shifts
+💫 GLISTEN - Glistening shimmer effect
+🌊 UNDERWATER - Underwater bubble effect
+🌌 COSMOS - Cosmic space effect
+☀️  SUNBEAM - Warm sunbeam effect
+🔮 ENCHANT - Magical enchanted effect
+
+✓ All effects demonstrated!
 
 💓 Step 7: Heartbeat Effect
 ─────────────────────────────────────────────────
@@ -196,7 +204,7 @@ Features demonstrated:
   ✓ Setting brightness (0-100%) with smooth transitions
   ✓ Changing colors with smooth transitions
   ✓ Pulsing effects
-  ✓ Native v2 effects (CANDLE)
+  ✓ Native v2 effects (all 10: FIRE, CANDLE, SPARKLE, PRISM, OPAL, GLISTEN, UNDERWATER, COSMOS, SUNBEAM, ENCHANT)
   ✓ Heartbeat effect
 ```
 
@@ -247,12 +255,28 @@ PulsingEffect.builder()
     .build()
     .start();
 
-// Native v2 effect
+// Native v2 effects - CANDLE example
 light.setState(new UpdateState()
     .color(Color.of(255, 147, 41))  // Warm orange
     .brightness(60)
     .effect(EffectType.CANDLE)
     .on());
+
+// Other native v2 effects with recommended colors
+light.setState(new UpdateState()
+    .color(Color.of(255, 80, 0))  // Orange-red for FIRE
+    .brightness(70)
+    .effect(EffectType.FIRE)
+    .on());
+
+light.setState(new UpdateState()
+    .color(Color.of(50, 0, 100))  // Deep purple for COSMOS
+    .brightness(70)
+    .effect(EffectType.COSMOS)
+    .on());
+
+// Stop any effect
+light.setState(new UpdateState().effect(EffectType.NO_EFFECT));
 ```
 
 ## Usage
