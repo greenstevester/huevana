@@ -1,12 +1,10 @@
 package io.github.greenstevester.heuvana;
 
 import io.github.greenstevester.heuvana.Color;
-import io.github.greenstevester.heuvana.v2.ColorFadeEffect;
 import io.github.greenstevester.heuvana.v2.HeartbeatEffect;
 import io.github.greenstevester.heuvana.v2.Hue;
 import io.github.greenstevester.heuvana.v2.Light;
 import io.github.greenstevester.heuvana.v2.PulsingEffect;
-import io.github.greenstevester.heuvana.v2.SunriseEffect;
 import io.github.greenstevester.heuvana.v2.UpdateState;
 import io.github.greenstevester.heuvana.v2.domain.update.EffectType;
 import org.junit.jupiter.api.Disabled;
@@ -25,14 +23,12 @@ import java.util.concurrent.CountDownLatch;
  *   <li>Listing all available lights</li>
  *   <li>Selecting a light interactively</li>
  *   <li>Identifying the light (breathe effect)</li>
- *   <li>Turning light on/off</li>
- *   <li>Setting brightness levels</li>
- *   <li>Changing colors</li>
+ *   <li>Turning light on/off with smooth transitions</li>
+ *   <li>Setting brightness levels with smooth transitions</li>
+ *   <li>Changing colors with smooth transitions</li>
  *   <li>Running a pulsing effect</li>
  *   <li>Demonstrating native Hue v2 effects (CANDLE)</li>
- *   <li>Color fade effect (red to blue transition)</li>
  *   <li>Heartbeat effect (realistic heartbeat pattern)</li>
- *   <li>Sunrise simulation (natural dawn progression)</li>
  * </ol>
  *
  * <p><b>Usage:</b></p>
@@ -115,14 +111,14 @@ public class QuickStartDemo {
             // Step 5: Turn light on/off
             System.out.println("💡 Step 2: Turn Light On/Off");
             System.out.println("─────────────────────────────────────────────────");
-            System.out.println("Turning light OFF...");
-            selectedLight.turnOff();
-            Thread.sleep(2000);
+            System.out.println("Turning light OFF with smooth 2-second transition...");
+            selectedLight.setState(new UpdateState().off().transitionTime(Duration.ofSeconds(2)));
+            Thread.sleep(2500);  // Wait for transition + 500ms buffer
             System.out.println("✓ Light is OFF");
             System.out.println();
-            System.out.println("Turning light ON...");
-            selectedLight.turnOn();
-            Thread.sleep(2000);
+            System.out.println("Turning light ON with smooth 2-second transition...");
+            selectedLight.setState(new UpdateState().on().transitionTime(Duration.ofSeconds(2)));
+            Thread.sleep(2500);  // Wait for transition + 500ms buffer
             System.out.println("✓ Light is ON");
             System.out.println();
 
@@ -131,19 +127,19 @@ public class QuickStartDemo {
             // Step 6: Set brightness
             System.out.println("🔆 Step 3: Set Brightness");
             System.out.println("─────────────────────────────────────────────────");
-            System.out.println("Setting brightness to 10%...");
-            selectedLight.setBrightness(10);
-            Thread.sleep(2000);
+            System.out.println("Setting brightness to 10% with 2-second transition...");
+            selectedLight.setState(new UpdateState().brightness(10).transitionTime(Duration.ofSeconds(2)));
+            Thread.sleep(2500);  // Wait for transition + 500ms buffer
             System.out.println("✓ Brightness at 10%");
             System.out.println();
-            System.out.println("Setting brightness to 100%...");
-            selectedLight.setBrightness(100);
-            Thread.sleep(2000);
+            System.out.println("Setting brightness to 100% with 2-second transition...");
+            selectedLight.setState(new UpdateState().brightness(100).transitionTime(Duration.ofSeconds(2)));
+            Thread.sleep(2500);  // Wait for transition + 500ms buffer
             System.out.println("✓ Brightness at 100%");
             System.out.println();
-            System.out.println("Setting brightness to 50%...");
-            selectedLight.setBrightness(50);
-            Thread.sleep(2000);
+            System.out.println("Setting brightness to 50% with 2-second transition...");
+            selectedLight.setState(new UpdateState().brightness(50).transitionTime(Duration.ofSeconds(2)));
+            Thread.sleep(2500);  // Wait for transition + 500ms buffer
             System.out.println("✓ Brightness at 50%");
             System.out.println();
 
@@ -152,19 +148,19 @@ public class QuickStartDemo {
             // Step 7: Change colors
             System.out.println("🎨 Step 4: Change Colors");
             System.out.println("─────────────────────────────────────────────────");
-            System.out.println("Setting color to RED...");
-            selectedLight.setState(new UpdateState().color(Color.of(255, 0, 0)).on());
-            Thread.sleep(2000);
+            System.out.println("Setting color to RED with 1-second transition...");
+            selectedLight.setState(new UpdateState().color(Color.of(255, 0, 0)).on().transitionTime(Duration.ofSeconds(1)));
+            Thread.sleep(1500);  // Wait for transition + 500ms buffer
             System.out.println("✓ Color is RED");
             System.out.println();
-            System.out.println("Setting color to GREEN...");
-            selectedLight.setState(new UpdateState().color(Color.of(0, 255, 0)).on());
-            Thread.sleep(2000);
+            System.out.println("Setting color to GREEN with 1-second transition...");
+            selectedLight.setState(new UpdateState().color(Color.of(0, 255, 0)).on().transitionTime(Duration.ofSeconds(1)));
+            Thread.sleep(1500);  // Wait for transition + 500ms buffer
             System.out.println("✓ Color is GREEN");
             System.out.println();
-            System.out.println("Setting color to BLUE...");
-            selectedLight.setState(new UpdateState().color(Color.of(0, 0, 255)).on());
-            Thread.sleep(2000);
+            System.out.println("Setting color to BLUE with 1-second transition...");
+            selectedLight.setState(new UpdateState().color(Color.of(0, 0, 255)).on().transitionTime(Duration.ofSeconds(1)));
+            Thread.sleep(1500);  // Wait for transition + 500ms buffer
             System.out.println("✓ Color is BLUE");
             System.out.println();
 
@@ -231,36 +227,8 @@ public class QuickStartDemo {
 
             waitForUser("Press Enter to continue...");
 
-            // Step 7: Color Fade Effect
-            System.out.println("🌈 Step 7: Color Fade Effect");
-            System.out.println("─────────────────────────────────────────────────");
-            System.out.println("   From: RED");
-            System.out.println("   To: BLUE");
-            System.out.println("   Duration: 10 seconds");
-            System.out.println();
-            System.out.println("Watch the color smoothly fade! 🌈");
-            System.out.println();
-
-            final CountDownLatch fadeLatch = new CountDownLatch(1);
-            ColorFadeEffect.builder()
-                .light(selectedLight)
-                .fromColor(Color.of(255, 0, 0))
-                .toColor(Color.of(0, 0, 255))
-                .duration(Duration.ofSeconds(10))
-                .onComplete(() -> {
-                    System.out.println("✓ Color fade complete!");
-                    fadeLatch.countDown();
-                })
-                .build()
-                .start();
-
-            fadeLatch.await();
-            System.out.println();
-
-            waitForUser("Press Enter to continue...");
-
-            // Step 8: Heartbeat Effect
-            System.out.println("💓 Step 8: Heartbeat Effect");
+            // Step 7: Heartbeat Effect
+            System.out.println("💓 Step 7: Heartbeat Effect");
             System.out.println("─────────────────────────────────────────────────");
             System.out.println("   Pattern: Two beats + pause");
             System.out.println("   Beat Count: 5");
@@ -284,33 +252,6 @@ public class QuickStartDemo {
             heartbeatLatch.await();
             System.out.println();
 
-            waitForUser("Press Enter to continue...");
-
-            // Step 9: Sunrise Simulation
-            System.out.println("🌅 Step 9: Sunrise Simulation");
-            System.out.println("─────────────────────────────────────────────────");
-            System.out.println("   Duration: 30 seconds");
-            System.out.println("   Colors: Deep red → Warm orange → Bright orange → Warm yellow");
-            System.out.println();
-            System.out.println("Watch the natural sunrise! 🌅");
-            System.out.println();
-
-            final CountDownLatch sunriseLatch = new CountDownLatch(1);
-            SunriseEffect.builder()
-                .light(selectedLight)
-                .duration(Duration.ofSeconds(30))
-                .startBrightness(1)
-                .endBrightness(100)
-                .onComplete(() -> {
-                    System.out.println("✓ Sunrise complete!");
-                    sunriseLatch.countDown();
-                })
-                .build()
-                .start();
-
-            sunriseLatch.await();
-            System.out.println();
-
             System.out.println("╔════════════════════════════════════════════════╗");
             System.out.println("║                                                ║");
             System.out.println("║              Demo Complete! ✨                 ║");
@@ -320,14 +261,12 @@ public class QuickStartDemo {
             System.out.println("Features demonstrated:");
             System.out.println("  ✓ Listing lights");
             System.out.println("  ✓ Identifying lights (breathe/alert)");
-            System.out.println("  ✓ Turning lights on/off");
-            System.out.println("  ✓ Setting brightness (0-100%)");
-            System.out.println("  ✓ Changing colors");
+            System.out.println("  ✓ Turning lights on/off with smooth transitions");
+            System.out.println("  ✓ Setting brightness (0-100%) with smooth transitions");
+            System.out.println("  ✓ Changing colors with smooth transitions");
             System.out.println("  ✓ Pulsing effects");
             System.out.println("  ✓ Native v2 effects (CANDLE)");
-            System.out.println("  ✓ Color fade effect (red to blue)");
             System.out.println("  ✓ Heartbeat effect");
-            System.out.println("  ✓ Sunrise simulation");
             System.out.println();
             System.out.println("Available native v2 effects:");
             System.out.println("  • FIRE, CANDLE, SPARKLE, PRISM");

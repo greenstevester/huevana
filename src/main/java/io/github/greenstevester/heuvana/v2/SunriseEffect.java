@@ -47,7 +47,7 @@ public class SunriseEffect {
     private final int steps;
     private final Runnable onComplete;
 
-    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private volatile ScheduledExecutorService executor;
     private final AtomicBoolean running = new AtomicBoolean(false);
 
     private SunriseEffect(final Light light, final Duration duration, final int startBrightness,
@@ -68,7 +68,18 @@ public class SunriseEffect {
             throw new IllegalStateException("Effect is already running");
         }
 
+        // Create executor - done here to avoid resource leak if effect is never started
+        executor = Executors.newSingleThreadScheduledExecutor();
+
         final long delayMs = duration.toMillis() / steps;
+
+        // Validate delay is reasonable
+        if (delayMs < 10) {
+            running.set(false);
+            executor.shutdown();
+            throw new IllegalStateException(
+                "Duration too short for number of steps (minimum 10ms per step required)");
+        }
 
         // Set initial state - very dim deep red
         light.setState(new UpdateState()
@@ -76,26 +87,48 @@ public class SunriseEffect {
                 .brightness(startBrightness)
                 .on());
 
-        for (int i = 1; i <= steps; i++) {
-            final int step = i;
-            executor.schedule(() -> {
-                final float progress = (float) step / steps;
+        // Schedule first step, which will schedule subsequent steps
+        scheduleStep(1, delayMs);
+    }
 
-                // Determine color based on progress through sunrise
-                final Color color = getSunriseColor(progress);
-                final int brightness = calculateBrightness(progress);
-
-                light.setState(new UpdateState()
-                        .color(color)
-                        .brightness(brightness)
-                        .on());
-
-                // On final step
-                if (step == steps) {
-                    handleCompletion();
-                }
-            }, delayMs * i, TimeUnit.MILLISECONDS);
+    /**
+     * Schedules a single step, which will recursively schedule the next step.
+     *
+     * @param step Current step number (1-based)
+     * @param delayMs Delay between steps in milliseconds
+     */
+    private void scheduleStep(final int step, final long delayMs) {
+        if (!running.get() || step > steps) {
+            return;
         }
+
+        executor.schedule(() -> {
+            // Double-check running flag at execution time
+            if (!running.get()) {
+                return;
+            }
+
+            final float progress = (float) step / steps;
+
+            // Determine color based on progress through sunrise
+            final Color color = getSunriseColor(progress);
+            final int brightness = calculateBrightness(progress);
+
+            light.setState(new UpdateState()
+                    .color(color)
+                    .brightness(brightness)
+                    .on());
+
+            // On final step
+            if (step == steps) {
+                handleCompletion();
+            } else {
+                // Check running flag again before scheduling next step to avoid race condition
+                if (running.get()) {
+                    scheduleStep(step + 1, delayMs);
+                }
+            }
+        }, delayMs, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -103,7 +136,9 @@ public class SunriseEffect {
      */
     public void stop() {
         running.set(false);
-        executor.shutdownNow();
+        if (executor != null) {
+            executor.shutdownNow();
+        }
     }
 
     /**
@@ -117,10 +152,28 @@ public class SunriseEffect {
 
     private void handleCompletion() {
         running.set(false);
-        executor.shutdown();
 
+        // Proper executor shutdown with timeout
+        if (executor != null) {
+            executor.shutdown();
+            try {
+                if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                    executor.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                executor.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        // Execute callback with exception handling to prevent user code from breaking cleanup
         if (onComplete != null) {
-            onComplete.run();
+            try {
+                onComplete.run();
+            } catch (Exception e) {
+                // Log error but don't propagate to avoid breaking effect cleanup
+                System.err.println("Error in SunriseEffect completion callback: " + e.getMessage());
+            }
         }
     }
 

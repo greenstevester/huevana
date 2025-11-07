@@ -228,6 +228,33 @@ public class UpdateState {
     return this;
   }
 
+  /**
+   * Sets the transition time for this state change.
+   * This controls how long the light takes to transition to the new state.
+   *
+   * @param duration The transition duration (will be converted to milliseconds).
+   * @return This state, for easy chaining of different methods.
+   * @throws IllegalArgumentException if duration is null, negative, or exceeds maximum allowed value
+   */
+  public UpdateState transitionTime(final Duration duration) {
+    if (duration == null) {
+      throw new IllegalArgumentException("Duration must not be null");
+    }
+    if (duration.isNegative()) {
+      throw new IllegalArgumentException("Duration must not be negative");
+    }
+
+    final long millis = duration.toMillis();
+    if (millis > Integer.MAX_VALUE) {
+      throw new IllegalArgumentException(
+          "Duration too long (maximum " + Integer.MAX_VALUE + " milliseconds)");
+    }
+
+    updateLight.setDynamics(new io.github.greenstevester.heuvana.v2.domain.update.Dynamics()
+        .setDuration((int) millis));
+    return this;
+  }
+
   UpdateLight getUpdateLight() {
     return updateLight;
   }
