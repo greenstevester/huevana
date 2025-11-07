@@ -102,7 +102,7 @@ This comprehensive demo showcases all basic and advanced light control features:
 6. **Set brightness** - Show 10%, 100%, and 50% brightness levels with smooth transitions
 7. **Change colors** - Cycle through RED, GREEN, and BLUE with smooth transitions
 8. **Pulsing effect** - Smooth brightness animation
-9. **Native v2 effects** - Demonstrate CANDLE effect
+9. **Native v2 effects** - Demonstrate CANDLE effect (many others available: FIRE, SPARKLE, PRISM, COSMOS, etc.)
 10. **Heartbeat effect** - Realistic two-beat heartbeat pattern
 
 **What you'll see:**
@@ -165,11 +165,14 @@ Setting color to BLUE...
 Watch your light pulse! 💫
 ✓ Pulsing effect complete!
 
-🕯️  Step 6: Native Hue v2 Effect
+🕯️  Step 6: Native Hue v2 Effect (CANDLE)
 ─────────────────────────────────────────────────
    Effect: CANDLE
    Duration: 8 seconds
    Description: Flickering candle effect
+
+   Note: Many other effects are available (FIRE, SPARKLE,
+   PRISM, COSMOS, etc.) - see documentation below!
 
 Watch your light flicker like a candle! 🕯️
 ✓ Effect stopped!
