@@ -28,7 +28,7 @@ Add the following dependency to your `pom.xml` file if you are using Maven:
 <dependency>
     <groupId>io.github.greenstevester</groupId>
     <artifactId>huevana</artifactId>
-    <version>5.2.0</version>
+    <version>5.0.4</version>
 </dependency>
 ```
 
@@ -40,7 +40,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'io.github.greenstevester:huevana:5.2.0'
+  implementation 'io.github.greenstevester:huevana:5.0.4'
 }
 ```
 
@@ -98,14 +98,12 @@ This comprehensive demo showcases all basic and advanced light control features:
 2. List all your lights
 3. Let you choose a light interactively
 4. **Identify the light** - Make it breathe to confirm selection
-5. **Turn light on/off** - Demonstrate basic power control
-6. **Set brightness** - Show 10%, 100%, and 50% brightness levels
-7. **Change colors** - Cycle through RED, GREEN, and BLUE
+5. **Turn light on/off** - Demonstrate basic power control with smooth transitions
+6. **Set brightness** - Show 10%, 100%, and 50% brightness levels with smooth transitions
+7. **Change colors** - Cycle through RED, GREEN, and BLUE with smooth transitions
 8. **Pulsing effect** - Smooth brightness animation
 9. **Native v2 effects** - Demonstrate CANDLE effect
-10. **Color fade effect** - Smooth transition from red to blue over 10 seconds
-11. **Heartbeat effect** - Realistic two-beat heartbeat pattern
-12. **Sunrise simulation** - Natural dawn progression through warm colors
+10. **Heartbeat effect** - Realistic two-beat heartbeat pattern
 
 **What you'll see:**
 ```
@@ -176,30 +174,13 @@ Watch your light pulse! 💫
 Watch your light flicker like a candle! 🕯️
 ✓ Effect stopped!
 
-🌈 Step 7: Color Fade Effect
-─────────────────────────────────────────────────
-   From: RED
-   To: BLUE
-   Duration: 10 seconds
-
-Watch the color smoothly fade! 🌈
-✓ Color fade complete!
-
-💓 Step 8: Heartbeat Effect
+💓 Step 7: Heartbeat Effect
 ─────────────────────────────────────────────────
    Pattern: Two beats + pause
    Beat Count: 5
 
 Watch the heartbeat pattern! 💓
 ✓ Heartbeat complete!
-
-🌅 Step 9: Sunrise Simulation
-─────────────────────────────────────────────────
-   Duration: 30 seconds
-   Colors: Deep red → Warm orange → Bright orange → Warm yellow
-
-Watch the natural sunrise! 🌅
-✓ Sunrise complete!
 
 ╔════════════════════════════════════════════════╗
 ║              Demo Complete! ✨                 ║
@@ -208,14 +189,12 @@ Watch the natural sunrise! 🌅
 Features demonstrated:
   ✓ Listing lights
   ✓ Identifying lights (breathe/alert)
-  ✓ Turning lights on/off
-  ✓ Setting brightness (0-100%)
-  ✓ Changing colors
+  ✓ Turning lights on/off with smooth transitions
+  ✓ Setting brightness (0-100%) with smooth transitions
+  ✓ Changing colors with smooth transitions
   ✓ Pulsing effects
   ✓ Native v2 effects (CANDLE)
-  ✓ Color fade effect (red to blue)
   ✓ Heartbeat effect
-  ✓ Sunrise simulation
 ```
 
 ### Using huevana in Your Code
@@ -240,19 +219,19 @@ Light light = hue.getLightByName("Kitchen Island").orElseThrow();
 // Identify light (breathe effect)
 light.setState(new UpdateState().alert());
 
-// Turn light on/off
-light.turnOff();
-light.turnOn();
+// Turn light on/off with smooth transitions
+light.setState(new UpdateState().off().transitionTime(Duration.ofSeconds(2)));
+light.setState(new UpdateState().on().transitionTime(Duration.ofSeconds(2)));
 
-// Set brightness
-light.setBrightness(10);   // 10%
-light.setBrightness(100);  // 100%
-light.setBrightness(50);   // 50%
+// Set brightness with smooth transitions
+light.setState(new UpdateState().brightness(10).transitionTime(Duration.ofSeconds(2)));   // 10%
+light.setState(new UpdateState().brightness(100).transitionTime(Duration.ofSeconds(2)));  // 100%
+light.setState(new UpdateState().brightness(50).transitionTime(Duration.ofSeconds(2)));   // 50%
 
-// Change colors
-light.setState(new UpdateState().color(Color.of(255, 0, 0)).on());   // Red
-light.setState(new UpdateState().color(Color.of(0, 255, 0)).on());   // Green
-light.setState(new UpdateState().color(Color.of(0, 0, 255)).on());   // Blue
+// Change colors with smooth transitions
+light.setState(new UpdateState().color(Color.of(255, 0, 0)).on().transitionTime(Duration.ofSeconds(1)));   // Red
+light.setState(new UpdateState().color(Color.of(0, 255, 0)).on().transitionTime(Duration.ofSeconds(1)));   // Green
+light.setState(new UpdateState().color(Color.of(0, 0, 255)).on().transitionTime(Duration.ofSeconds(1)));   // Blue
 
 // Pulsing effect
 PulsingEffect.builder()
