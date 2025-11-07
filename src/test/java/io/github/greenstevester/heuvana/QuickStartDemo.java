@@ -1,9 +1,12 @@
 package io.github.greenstevester.heuvana;
 
 import io.github.greenstevester.heuvana.Color;
+import io.github.greenstevester.heuvana.v2.ColorFadeEffect;
+import io.github.greenstevester.heuvana.v2.HeartbeatEffect;
 import io.github.greenstevester.heuvana.v2.Hue;
 import io.github.greenstevester.heuvana.v2.Light;
 import io.github.greenstevester.heuvana.v2.PulsingEffect;
+import io.github.greenstevester.heuvana.v2.SunriseEffect;
 import io.github.greenstevester.heuvana.v2.UpdateState;
 import io.github.greenstevester.heuvana.v2.domain.update.EffectType;
 import org.junit.jupiter.api.Disabled;
@@ -16,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Interactive Quick Start Demo for huevana.
  *
- * <p>This comprehensive demo showcases all basic light control features:
+ * <p>This comprehensive demo showcases all basic and advanced light control features:
  * <ol>
  *   <li>Connecting to your bridge with provided credentials</li>
  *   <li>Listing all available lights</li>
@@ -27,6 +30,9 @@ import java.util.concurrent.CountDownLatch;
  *   <li>Changing colors</li>
  *   <li>Running a pulsing effect</li>
  *   <li>Demonstrating native Hue v2 effects (CANDLE)</li>
+ *   <li>Color fade effect (red to blue transition)</li>
+ *   <li>Heartbeat effect (realistic heartbeat pattern)</li>
+ *   <li>Sunrise simulation (natural dawn progression)</li>
  * </ol>
  *
  * <p><b>Usage:</b></p>
@@ -222,6 +228,89 @@ public class QuickStartDemo {
             System.out.println("✓ Effect stopped!");
 
             System.out.println();
+
+            waitForUser("Press Enter to continue...");
+
+            // Step 7: Color Fade Effect
+            System.out.println("🌈 Step 7: Color Fade Effect");
+            System.out.println("─────────────────────────────────────────────────");
+            System.out.println("   From: RED");
+            System.out.println("   To: BLUE");
+            System.out.println("   Duration: 10 seconds");
+            System.out.println();
+            System.out.println("Watch the color smoothly fade! 🌈");
+            System.out.println();
+
+            final CountDownLatch fadeLatch = new CountDownLatch(1);
+            ColorFadeEffect.builder()
+                .light(selectedLight)
+                .fromColor(Color.of(255, 0, 0))
+                .toColor(Color.of(0, 0, 255))
+                .duration(Duration.ofSeconds(10))
+                .onComplete(() -> {
+                    System.out.println("✓ Color fade complete!");
+                    fadeLatch.countDown();
+                })
+                .build()
+                .start();
+
+            fadeLatch.await();
+            System.out.println();
+
+            waitForUser("Press Enter to continue...");
+
+            // Step 8: Heartbeat Effect
+            System.out.println("💓 Step 8: Heartbeat Effect");
+            System.out.println("─────────────────────────────────────────────────");
+            System.out.println("   Pattern: Two beats + pause");
+            System.out.println("   Beat Count: 5");
+            System.out.println();
+            System.out.println("Watch the heartbeat pattern! 💓");
+            System.out.println();
+
+            final CountDownLatch heartbeatLatch = new CountDownLatch(1);
+            HeartbeatEffect.builder()
+                .light(selectedLight)
+                .minBrightness(10)
+                .maxBrightness(100)
+                .beatCount(5)
+                .onComplete(() -> {
+                    System.out.println("✓ Heartbeat complete!");
+                    heartbeatLatch.countDown();
+                })
+                .build()
+                .start();
+
+            heartbeatLatch.await();
+            System.out.println();
+
+            waitForUser("Press Enter to continue...");
+
+            // Step 9: Sunrise Simulation
+            System.out.println("🌅 Step 9: Sunrise Simulation");
+            System.out.println("─────────────────────────────────────────────────");
+            System.out.println("   Duration: 30 seconds");
+            System.out.println("   Colors: Deep red → Warm orange → Bright orange → Warm yellow");
+            System.out.println();
+            System.out.println("Watch the natural sunrise! 🌅");
+            System.out.println();
+
+            final CountDownLatch sunriseLatch = new CountDownLatch(1);
+            SunriseEffect.builder()
+                .light(selectedLight)
+                .duration(Duration.ofSeconds(30))
+                .startBrightness(1)
+                .endBrightness(100)
+                .onComplete(() -> {
+                    System.out.println("✓ Sunrise complete!");
+                    sunriseLatch.countDown();
+                })
+                .build()
+                .start();
+
+            sunriseLatch.await();
+            System.out.println();
+
             System.out.println("╔════════════════════════════════════════════════╗");
             System.out.println("║                                                ║");
             System.out.println("║              Demo Complete! ✨                 ║");
@@ -236,6 +325,9 @@ public class QuickStartDemo {
             System.out.println("  ✓ Changing colors");
             System.out.println("  ✓ Pulsing effects");
             System.out.println("  ✓ Native v2 effects (CANDLE)");
+            System.out.println("  ✓ Color fade effect (red to blue)");
+            System.out.println("  ✓ Heartbeat effect");
+            System.out.println("  ✓ Sunrise simulation");
             System.out.println();
             System.out.println("Available native v2 effects:");
             System.out.println("  • FIRE, CANDLE, SPARKLE, PRISM");

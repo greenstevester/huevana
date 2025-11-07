@@ -93,7 +93,7 @@ chmod +x run-demo.sh
 ./run-demo.sh
 ```
 
-This comprehensive demo showcases all basic light control features:
+This comprehensive demo showcases all basic and advanced light control features:
 1. Connect to your bridge
 2. List all your lights
 3. Let you choose a light interactively
@@ -103,6 +103,9 @@ This comprehensive demo showcases all basic light control features:
 7. **Change colors** - Cycle through RED, GREEN, and BLUE
 8. **Pulsing effect** - Smooth brightness animation
 9. **Native v2 effects** - Demonstrate CANDLE effect
+10. **Color fade effect** - Smooth transition from red to blue over 10 seconds
+11. **Heartbeat effect** - Realistic two-beat heartbeat pattern
+12. **Sunrise simulation** - Natural dawn progression through warm colors
 
 **What you'll see:**
 ```
@@ -173,6 +176,31 @@ Watch your light pulse! 💫
 Watch your light flicker like a candle! 🕯️
 ✓ Effect stopped!
 
+🌈 Step 7: Color Fade Effect
+─────────────────────────────────────────────────
+   From: RED
+   To: BLUE
+   Duration: 10 seconds
+
+Watch the color smoothly fade! 🌈
+✓ Color fade complete!
+
+💓 Step 8: Heartbeat Effect
+─────────────────────────────────────────────────
+   Pattern: Two beats + pause
+   Beat Count: 5
+
+Watch the heartbeat pattern! 💓
+✓ Heartbeat complete!
+
+🌅 Step 9: Sunrise Simulation
+─────────────────────────────────────────────────
+   Duration: 30 seconds
+   Colors: Deep red → Warm orange → Bright orange → Warm yellow
+
+Watch the natural sunrise! 🌅
+✓ Sunrise complete!
+
 ╔════════════════════════════════════════════════╗
 ║              Demo Complete! ✨                 ║
 ╚════════════════════════════════════════════════╝
@@ -185,6 +213,9 @@ Features demonstrated:
   ✓ Changing colors
   ✓ Pulsing effects
   ✓ Native v2 effects (CANDLE)
+  ✓ Color fade effect (red to blue)
+  ✓ Heartbeat effect
+  ✓ Sunrise simulation
 ```
 
 ### Using huevana in Your Code
