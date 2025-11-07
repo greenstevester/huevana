@@ -13,5 +13,11 @@ public enum EffectType {
   @JsonProperty("candle") CANDLE,
   @JsonProperty("sparkle") SPARKLE,
   @JsonProperty("prism") PRISM,
+  @JsonProperty("opal") OPAL,
+  @JsonProperty("glisten") GLISTEN,
+  @JsonProperty("underwater") UNDERWATER,
+  @JsonProperty("cosmos") COSMOS,
+  @JsonProperty("sunbeam") SUNBEAM,
+  @JsonProperty("enchant") ENCHANT,
   @JsonProperty("no_effect") NO_EFFECT;
 }

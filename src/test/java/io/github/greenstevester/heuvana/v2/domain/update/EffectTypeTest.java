@@ -19,6 +19,12 @@ class EffectTypeTest {
     assertNotNull(EffectType.CANDLE);
     assertNotNull(EffectType.SPARKLE);
     assertNotNull(EffectType.PRISM);
+    assertNotNull(EffectType.OPAL);
+    assertNotNull(EffectType.GLISTEN);
+    assertNotNull(EffectType.UNDERWATER);
+    assertNotNull(EffectType.COSMOS);
+    assertNotNull(EffectType.SUNBEAM);
+    assertNotNull(EffectType.ENCHANT);
     assertNotNull(EffectType.NO_EFFECT);
     assertNotNull(EffectType.UNKNOWN);
   }
@@ -37,17 +43,29 @@ class EffectTypeTest {
     assertEquals("\"candle\"", mapper.writeValueAsString(EffectType.CANDLE));
     assertEquals("\"sparkle\"", mapper.writeValueAsString(EffectType.SPARKLE));
     assertEquals("\"prism\"", mapper.writeValueAsString(EffectType.PRISM));
+    assertEquals("\"opal\"", mapper.writeValueAsString(EffectType.OPAL));
+    assertEquals("\"glisten\"", mapper.writeValueAsString(EffectType.GLISTEN));
+    assertEquals("\"underwater\"", mapper.writeValueAsString(EffectType.UNDERWATER));
+    assertEquals("\"cosmos\"", mapper.writeValueAsString(EffectType.COSMOS));
+    assertEquals("\"sunbeam\"", mapper.writeValueAsString(EffectType.SUNBEAM));
+    assertEquals("\"enchant\"", mapper.writeValueAsString(EffectType.ENCHANT));
     assertEquals("\"no_effect\"", mapper.writeValueAsString(EffectType.NO_EFFECT));
   }
 
   @Test
   void testEffectTypeValues() {
     EffectType[] values = EffectType.values();
-    assertTrue(values.length >= 6);
+    assertEquals(12, values.length, "Should have exactly 12 effect types");
     assertTrue(java.util.Arrays.asList(values).contains(EffectType.FIRE));
     assertTrue(java.util.Arrays.asList(values).contains(EffectType.CANDLE));
     assertTrue(java.util.Arrays.asList(values).contains(EffectType.SPARKLE));
     assertTrue(java.util.Arrays.asList(values).contains(EffectType.PRISM));
+    assertTrue(java.util.Arrays.asList(values).contains(EffectType.OPAL));
+    assertTrue(java.util.Arrays.asList(values).contains(EffectType.GLISTEN));
+    assertTrue(java.util.Arrays.asList(values).contains(EffectType.UNDERWATER));
+    assertTrue(java.util.Arrays.asList(values).contains(EffectType.COSMOS));
+    assertTrue(java.util.Arrays.asList(values).contains(EffectType.SUNBEAM));
+    assertTrue(java.util.Arrays.asList(values).contains(EffectType.ENCHANT));
   }
 
   @Test
@@ -56,7 +74,24 @@ class EffectTypeTest {
     assertEquals(EffectType.CANDLE, EffectType.valueOf("CANDLE"));
     assertEquals(EffectType.SPARKLE, EffectType.valueOf("SPARKLE"));
     assertEquals(EffectType.PRISM, EffectType.valueOf("PRISM"));
+    assertEquals(EffectType.OPAL, EffectType.valueOf("OPAL"));
+    assertEquals(EffectType.GLISTEN, EffectType.valueOf("GLISTEN"));
+    assertEquals(EffectType.UNDERWATER, EffectType.valueOf("UNDERWATER"));
+    assertEquals(EffectType.COSMOS, EffectType.valueOf("COSMOS"));
+    assertEquals(EffectType.SUNBEAM, EffectType.valueOf("SUNBEAM"));
+    assertEquals(EffectType.ENCHANT, EffectType.valueOf("ENCHANT"));
     assertEquals(EffectType.NO_EFFECT, EffectType.valueOf("NO_EFFECT"));
     assertEquals(EffectType.UNKNOWN, EffectType.valueOf("UNKNOWN"));
+  }
+
+  @Test
+  void testNewEffectsJsonDeserialization() throws Exception {
+    // Test that the new effects can be deserialized from JSON
+    assertEquals(EffectType.OPAL, mapper.readValue("\"opal\"", EffectType.class));
+    assertEquals(EffectType.GLISTEN, mapper.readValue("\"glisten\"", EffectType.class));
+    assertEquals(EffectType.UNDERWATER, mapper.readValue("\"underwater\"", EffectType.class));
+    assertEquals(EffectType.COSMOS, mapper.readValue("\"cosmos\"", EffectType.class));
+    assertEquals(EffectType.SUNBEAM, mapper.readValue("\"sunbeam\"", EffectType.class));
+    assertEquals(EffectType.ENCHANT, mapper.readValue("\"enchant\"", EffectType.class));
   }
 }
