@@ -85,6 +85,7 @@ The demo will:
 2. List all your lights
 3. Let you choose a light
 4. Run a pulsing effect on the selected light
+5. Demonstrate a native Hue v2 effect (CANDLE)
 
 **What you'll see:**
 ```
@@ -329,6 +330,52 @@ mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.v2.PulsingEffec
               -Dexec.classpathScope=test \
               -Dexec.args="\"Living Room Lamp\" 5 100"
 ```
+
+### Native Philips Hue v2 Effects
+
+The library supports all native Philips Hue Bridge v2 API effects. These effects run continuously on the light until stopped:
+
+**Available Effects:**
+- `FIRE` - Cozy fireplace effect
+- `CANDLE` - Flickering candle effect
+- `SPARKLE` - Sparkling light effect
+- `PRISM` - Prism color effects
+- `OPAL` - Opal color shifts
+- `GLISTEN` - Glistening shimmer effect
+- `UNDERWATER` - Underwater bubble effect
+- `COSMOS` - Cosmic space effect
+- `SUNBEAM` - Warm sunbeam effect
+- `ENCHANT` - Magical enchanted effect
+
+**Example usage:**
+
+[//]: # (requires-init)
+[//]: # (import io.github.greenstevester.heuvana.v2.domain.update.EffectType;)
+```java
+// Apply a candle effect to create ambiance
+Light light = hue.getLightByName("Table Lamp").orElseThrow();
+light.setState(new UpdateState()
+    .color(Color.of(255, 147, 41))  // Warm orange
+    .brightness(50)
+    .effect(EffectType.CANDLE)
+    .on());
+
+// Apply a cosmos effect for a space-themed atmosphere
+light.setState(new UpdateState()
+    .effect(EffectType.COSMOS)
+    .on());
+
+// Stop the effect
+light.setState(new UpdateState().effect(EffectType.NO_EFFECT));
+
+// Check which effects your light supports
+Collection<EffectType> supportedEffects = light.getSupportedEffects();
+System.out.println("Supported effects: " + supportedEffects);
+```
+
+**Note:** Not all lights support all effects. Use `light.getSupportedEffects()` to check which effects are available for your specific light model. Effects only work on individual lights, not on rooms or zones.
+
+For more effect examples and use cases, see [EFFECTS_GUIDE.md](EFFECTS_GUIDE.md).
 
 ### Lights that belong to a room or a zone
 

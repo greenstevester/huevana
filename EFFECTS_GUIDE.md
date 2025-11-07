@@ -21,16 +21,20 @@ The `flash()`, `pulse()`, and `alert()` methods all use the Philips Hue "breathe
 
 ### Continuous Effects
 
-For continuous effects that don't stop automatically:
+For continuous effects that don't stop automatically. Available effects: `FIRE`, `CANDLE`, `SPARKLE`, `PRISM`, `OPAL`, `GLISTEN`, `UNDERWATER`, `COSMOS`, `SUNBEAM`, `ENCHANT`.
 
 ```java
-// Sparkle effect
+// Sparkle effect (one of many available)
 light.setState(new UpdateState()
     .color(Color.CYAN)
     .on()
     .effect(EffectType.SPARKLE));
 
-// Stop effect
+// Cosmos effect - creates deep space atmosphere
+light.setState(new UpdateState()
+    .effect(EffectType.COSMOS));
+
+// Stop any effect
 light.setState(new UpdateState().effect(EffectType.NO_EFFECT));
 ```
 
@@ -115,6 +119,51 @@ light.setState(new UpdateState()
 ```java
 light.setState(new UpdateState()
     .effect(EffectType.PRISM));
+```
+
+#### Opal Effect
+```java
+// Opal color shifts - creates shimmering color transitions
+light.setState(new UpdateState()
+    .effect(EffectType.OPAL));
+```
+
+#### Glisten Effect
+```java
+// Glistening light effect - creates a subtle sparkling shimmer
+light.setState(new UpdateState()
+    .color(Color.WHITE)
+    .effect(EffectType.GLISTEN));
+```
+
+#### Underwater Effect
+```java
+// Underwater bubble effect - creates a gentle wavy motion
+light.setState(new UpdateState()
+    .color(Color.CYAN)
+    .effect(EffectType.UNDERWATER));
+```
+
+#### Cosmos Effect
+```java
+// Cosmic space effect - creates a deep space atmosphere
+light.setState(new UpdateState()
+    .effect(EffectType.COSMOS));
+```
+
+#### Sunbeam Effect
+```java
+// Warm sunbeam effect - creates a natural sunlight atmosphere
+light.setState(new UpdateState()
+    .color(Color.YELLOW)
+    .effect(EffectType.SUNBEAM));
+```
+
+#### Enchant Effect
+```java
+// Magical enchanted effect - creates a mystical atmosphere
+light.setState(new UpdateState()
+    .effect(EffectType.ENCHANT));
 ```
 
 #### Stop Effect

@@ -1,8 +1,11 @@
 package io.github.greenstevester.heuvana;
 
+import io.github.greenstevester.heuvana.Color;
 import io.github.greenstevester.heuvana.v2.Hue;
 import io.github.greenstevester.heuvana.v2.Light;
 import io.github.greenstevester.heuvana.v2.PulsingEffect;
+import io.github.greenstevester.heuvana.v2.UpdateState;
+import io.github.greenstevester.heuvana.v2.domain.update.EffectType;
 import org.junit.jupiter.api.Disabled;
 
 import java.time.Duration;
@@ -19,6 +22,7 @@ import java.util.concurrent.CountDownLatch;
  *   <li>Listing all available lights</li>
  *   <li>Letting you choose a light</li>
  *   <li>Running a pulsing effect on the selected light</li>
+ *   <li>Demonstrating a native Hue v2 effect (CANDLE)</li>
  * </ol>
  *
  * <p><b>Usage:</b></p>
@@ -114,15 +118,46 @@ public class QuickStartDemo {
             latch.await(); // Wait for completion
 
             System.out.println();
+
+            // Step 5: Demo native v2 effect
+            System.out.println("✨ Now let's try a native Hue v2 effect...");
+            System.out.println("─────────────────────────────────────────────────");
+            System.out.println("   Effect: CANDLE");
+            System.out.println("   Duration: 10 seconds");
+            System.out.println("   Description: Flickering candle effect");
+            System.out.println();
+            System.out.println("Watch your light flicker like a candle! 🕯️");
+            System.out.println();
+
+            // Apply candle effect
+            selectedLight.setState(new UpdateState()
+                .color(Color.of(255, 147, 41))  // Warm orange
+                .brightness(60)
+                .effect(EffectType.CANDLE)
+                .on());
+
+            // Let it run for 10 seconds
+            Thread.sleep(10000);
+
+            // Stop the effect and restore light
+            selectedLight.setState(new UpdateState().effect(EffectType.NO_EFFECT));
+            System.out.println("✓ Effect stopped!");
+
+            System.out.println();
             System.out.println("╔════════════════════════════════════════════════╗");
             System.out.println("║                                                ║");
             System.out.println("║              Demo Complete! ✨                 ║");
             System.out.println("║                                                ║");
             System.out.println("╚════════════════════════════════════════════════╝");
             System.out.println();
+            System.out.println("Available native v2 effects:");
+            System.out.println("  • FIRE, CANDLE, SPARKLE, PRISM");
+            System.out.println("  • OPAL, GLISTEN, UNDERWATER, COSMOS");
+            System.out.println("  • SUNBEAM, ENCHANT");
+            System.out.println();
             System.out.println("Next steps:");
             System.out.println("  • Check out README.md for more examples");
-            System.out.println("  • Explore other effects in EFFECTS_GUIDE.md");
+            System.out.println("  • Explore all effects in EFFECTS_GUIDE.md");
             System.out.println("  • Read the API documentation");
             System.out.println();
 
