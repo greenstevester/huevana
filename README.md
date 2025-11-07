@@ -80,12 +80,16 @@ mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.QuickStartDemo"
   -Dexec.args="192.168.1.100 abc123xyz456"
 ```
 
-The demo will:
+This comprehensive demo showcases all basic light control features:
 1. Connect to your bridge
 2. List all your lights
-3. Let you choose a light
-4. Run a pulsing effect on the selected light
-5. Demonstrate a native Hue v2 effect (CANDLE)
+3. Let you choose a light interactively
+4. **Identify the light** - Make it breathe to confirm selection
+5. **Turn light on/off** - Demonstrate basic power control
+6. **Set brightness** - Show 10%, 100%, and 50% brightness levels
+7. **Change colors** - Cycle through RED, GREEN, and BLUE
+8. **Pulsing effect** - Smooth brightness animation
+9. **Native v2 effects** - Demonstrate CANDLE effect
 
 **What you'll see:**
 ```
@@ -103,29 +107,85 @@ The demo will:
  3. Bedroom Lamp                 [OFF]
 
 Choose a light (1-3): 1
-
 ✓ Selected: Kitchen Island
 
-✨ Running pulsing effect...
+Press Enter to start the demo...
+
+🔦 Step 1: Identify Light
+─────────────────────────────────────────────────
+Making the light breathe so you can identify it...
+✓ Identification complete!
+
+💡 Step 2: Turn Light On/Off
+─────────────────────────────────────────────────
+Turning light OFF...
+✓ Light is OFF
+Turning light ON...
+✓ Light is ON
+
+🔆 Step 3: Set Brightness
+─────────────────────────────────────────────────
+Setting brightness to 10%...
+✓ Brightness at 10%
+Setting brightness to 100%...
+✓ Brightness at 100%
+Setting brightness to 50%...
+✓ Brightness at 50%
+
+🎨 Step 4: Change Colors
+─────────────────────────────────────────────────
+Setting color to RED...
+✓ Color is RED
+Setting color to GREEN...
+✓ Color is GREEN
+Setting color to BLUE...
+✓ Color is BLUE
+
+✨ Step 5: Pulsing Effect
 ─────────────────────────────────────────────────
    Min Brightness: 10%
    Max Brightness: 90%
    Pulse Duration: 1 second
-   Pulse Count:    10 pulses
+   Pulse Count:    5 pulses
 
 Watch your light pulse! 💫
+✓ Pulsing effect complete!
+
+🕯️  Step 6: Native Hue v2 Effect
+─────────────────────────────────────────────────
+   Effect: CANDLE
+   Duration: 8 seconds
+   Description: Flickering candle effect
+
+Watch your light flicker like a candle! 🕯️
+✓ Effect stopped!
+
+╔════════════════════════════════════════════════╗
+║              Demo Complete! ✨                 ║
+╚════════════════════════════════════════════════╝
+
+Features demonstrated:
+  ✓ Listing lights
+  ✓ Identifying lights (breathe/alert)
+  ✓ Turning lights on/off
+  ✓ Setting brightness (0-100%)
+  ✓ Changing colors
+  ✓ Pulsing effects
+  ✓ Native v2 effects (CANDLE)
 ```
 
 ### Using huevana in Your Code
 
-Here's the equivalent code from the demo:
+Here are code examples for the features demonstrated in the QuickStartDemo:
 
 ```java
+import io.github.greenstevester.heuvana.Color;
 import io.github.greenstevester.heuvana.v2.Hue;
 import io.github.greenstevester.heuvana.v2.Light;
+import io.github.greenstevester.heuvana.v2.UpdateState;
 import io.github.greenstevester.heuvana.v2.PulsingEffect;
+import io.github.greenstevester.heuvana.v2.domain.update.EffectType;
 import java.time.Duration;
-import java.util.concurrent.CountDownLatch;
 
 // Connect to bridge
 Hue hue = new Hue("192.168.1.100", "your-api-key");
@@ -133,24 +193,40 @@ Hue hue = new Hue("192.168.1.100", "your-api-key");
 // Get a light
 Light light = hue.getLightByName("Kitchen Island").orElseThrow();
 
-// Create and run a pulsing effect
-CountDownLatch latch = new CountDownLatch(1);
+// Identify light (breathe effect)
+light.setState(new UpdateState().alert());
 
+// Turn light on/off
+light.turnOff();
+light.turnOn();
+
+// Set brightness
+light.setBrightness(10);   // 10%
+light.setBrightness(100);  // 100%
+light.setBrightness(50);   // 50%
+
+// Change colors
+light.setState(new UpdateState().color(Color.of(255, 0, 0)).on());   // Red
+light.setState(new UpdateState().color(Color.of(0, 255, 0)).on());   // Green
+light.setState(new UpdateState().color(Color.of(0, 0, 255)).on());   // Blue
+
+// Pulsing effect
 PulsingEffect.builder()
     .light(light)
     .minBrightness(10)
     .maxBrightness(90)
     .pulseDuration(Duration.ofMillis(1000))
-    .pulseCount(10)
+    .pulseCount(5)
     .preserveState(true)
-    .onComplete(() -> {
-        System.out.println("Done!");
-        latch.countDown();
-    })
     .build()
     .start();
 
-latch.await(); // Wait for effect to complete
+// Native v2 effect
+light.setState(new UpdateState()
+    .color(Color.of(255, 147, 41))  // Warm orange
+    .brightness(60)
+    .effect(EffectType.CANDLE)
+    .on());
 ```
 
 ## Usage

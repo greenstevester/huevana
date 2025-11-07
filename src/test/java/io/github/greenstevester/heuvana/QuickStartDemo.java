@@ -16,13 +16,17 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Interactive Quick Start Demo for huevana.
  *
- * <p>This demo helps you quickly test the library with your Hue Bridge by:
+ * <p>This comprehensive demo showcases all basic light control features:
  * <ol>
  *   <li>Connecting to your bridge with provided credentials</li>
  *   <li>Listing all available lights</li>
- *   <li>Letting you choose a light</li>
- *   <li>Running a pulsing effect on the selected light</li>
- *   <li>Demonstrating a native Hue v2 effect (CANDLE)</li>
+ *   <li>Selecting a light interactively</li>
+ *   <li>Identifying the light (breathe effect)</li>
+ *   <li>Turning light on/off</li>
+ *   <li>Setting brightness levels</li>
+ *   <li>Changing colors</li>
+ *   <li>Running a pulsing effect</li>
+ *   <li>Demonstrating native Hue v2 effects (CANDLE)</li>
  * </ol>
  *
  * <p><b>Usage:</b></p>
@@ -88,13 +92,85 @@ public class QuickStartDemo {
             System.out.println("✓ Selected: " + selectedLight.getName());
             System.out.println();
 
-            // Step 4: Run pulsing effect
-            System.out.println("✨ Running pulsing effect...");
+            waitForUser("Press Enter to start the demo...");
+
+            // Step 4: Identify the light
+            System.out.println("🔦 Step 1: Identify Light");
+            System.out.println("─────────────────────────────────────────────────");
+            System.out.println("Making the light breathe so you can identify it...");
+            System.out.println();
+            selectedLight.setState(new UpdateState().alert());
+            Thread.sleep(3000);
+            System.out.println("✓ Identification complete!");
+            System.out.println();
+
+            waitForUser("Press Enter to continue...");
+
+            // Step 5: Turn light on/off
+            System.out.println("💡 Step 2: Turn Light On/Off");
+            System.out.println("─────────────────────────────────────────────────");
+            System.out.println("Turning light OFF...");
+            selectedLight.turnOff();
+            Thread.sleep(2000);
+            System.out.println("✓ Light is OFF");
+            System.out.println();
+            System.out.println("Turning light ON...");
+            selectedLight.turnOn();
+            Thread.sleep(2000);
+            System.out.println("✓ Light is ON");
+            System.out.println();
+
+            waitForUser("Press Enter to continue...");
+
+            // Step 6: Set brightness
+            System.out.println("🔆 Step 3: Set Brightness");
+            System.out.println("─────────────────────────────────────────────────");
+            System.out.println("Setting brightness to 10%...");
+            selectedLight.setBrightness(10);
+            Thread.sleep(2000);
+            System.out.println("✓ Brightness at 10%");
+            System.out.println();
+            System.out.println("Setting brightness to 100%...");
+            selectedLight.setBrightness(100);
+            Thread.sleep(2000);
+            System.out.println("✓ Brightness at 100%");
+            System.out.println();
+            System.out.println("Setting brightness to 50%...");
+            selectedLight.setBrightness(50);
+            Thread.sleep(2000);
+            System.out.println("✓ Brightness at 50%");
+            System.out.println();
+
+            waitForUser("Press Enter to continue...");
+
+            // Step 7: Change colors
+            System.out.println("🎨 Step 4: Change Colors");
+            System.out.println("─────────────────────────────────────────────────");
+            System.out.println("Setting color to RED...");
+            selectedLight.setState(new UpdateState().color(Color.of(255, 0, 0)).on());
+            Thread.sleep(2000);
+            System.out.println("✓ Color is RED");
+            System.out.println();
+            System.out.println("Setting color to GREEN...");
+            selectedLight.setState(new UpdateState().color(Color.of(0, 255, 0)).on());
+            Thread.sleep(2000);
+            System.out.println("✓ Color is GREEN");
+            System.out.println();
+            System.out.println("Setting color to BLUE...");
+            selectedLight.setState(new UpdateState().color(Color.of(0, 0, 255)).on());
+            Thread.sleep(2000);
+            System.out.println("✓ Color is BLUE");
+            System.out.println();
+
+            waitForUser("Press Enter to continue...");
+
+            // Step 8: Run pulsing effect
+            System.out.println("✨ Step 5: Pulsing Effect");
             System.out.println("─────────────────────────────────────────────────");
             System.out.println("   Min Brightness: 10%");
             System.out.println("   Max Brightness: 90%");
             System.out.println("   Pulse Duration: 1 second");
-            System.out.println("   Pulse Count:    10 pulses");
+            System.out.println("   Pulse Count:    5 pulses");
             System.out.println();
             System.out.println("Watch your light pulse! 💫");
             System.out.println();
@@ -106,10 +182,10 @@ public class QuickStartDemo {
                 .minBrightness(10)
                 .maxBrightness(90)
                 .pulseDuration(Duration.ofMillis(1000))
-                .pulseCount(10)
+                .pulseCount(5)
                 .preserveState(true)
                 .onComplete(() -> {
-                    System.out.println("✓ Effect complete!");
+                    System.out.println("✓ Pulsing effect complete!");
                     latch.countDown();
                 })
                 .build();
@@ -119,11 +195,13 @@ public class QuickStartDemo {
 
             System.out.println();
 
-            // Step 5: Demo native v2 effect
-            System.out.println("✨ Now let's try a native Hue v2 effect...");
+            waitForUser("Press Enter to continue...");
+
+            // Step 9: Demo native v2 effect
+            System.out.println("🕯️  Step 6: Native Hue v2 Effect");
             System.out.println("─────────────────────────────────────────────────");
             System.out.println("   Effect: CANDLE");
-            System.out.println("   Duration: 10 seconds");
+            System.out.println("   Duration: 8 seconds");
             System.out.println("   Description: Flickering candle effect");
             System.out.println();
             System.out.println("Watch your light flicker like a candle! 🕯️");
@@ -136,8 +214,8 @@ public class QuickStartDemo {
                 .effect(EffectType.CANDLE)
                 .on());
 
-            // Let it run for 10 seconds
-            Thread.sleep(10000);
+            // Let it run for 8 seconds
+            Thread.sleep(8000);
 
             // Stop the effect and restore light
             selectedLight.setState(new UpdateState().effect(EffectType.NO_EFFECT));
@@ -149,6 +227,15 @@ public class QuickStartDemo {
             System.out.println("║              Demo Complete! ✨                 ║");
             System.out.println("║                                                ║");
             System.out.println("╚════════════════════════════════════════════════╝");
+            System.out.println();
+            System.out.println("Features demonstrated:");
+            System.out.println("  ✓ Listing lights");
+            System.out.println("  ✓ Identifying lights (breathe/alert)");
+            System.out.println("  ✓ Turning lights on/off");
+            System.out.println("  ✓ Setting brightness (0-100%)");
+            System.out.println("  ✓ Changing colors");
+            System.out.println("  ✓ Pulsing effects");
+            System.out.println("  ✓ Native v2 effects (CANDLE)");
             System.out.println();
             System.out.println("Available native v2 effects:");
             System.out.println("  • FIRE, CANDLE, SPARKLE, PRISM");
@@ -194,6 +281,13 @@ public class QuickStartDemo {
                 System.out.println("❌ Invalid input. Please enter a number.");
             }
         }
+    }
+
+    private static void waitForUser(final String message) {
+        final Scanner scanner = new Scanner(System.in);
+        System.out.println(message);
+        scanner.nextLine();
+        System.out.println();
     }
 
     private static void printUsage() {
