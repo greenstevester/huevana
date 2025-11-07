@@ -154,3 +154,4 @@ hue-credentials.json
 # Demo scripts with embedded credentials (personal use only)
 run-demo.sh
 demo-*.sh
+/.claude/
