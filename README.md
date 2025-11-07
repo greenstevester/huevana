@@ -420,6 +420,48 @@ mvn exec:java -Dexec.mainClass="io.github.greenstevester.heuvana.v2.PulsingEffec
               -Dexec.args="\"Living Room Lamp\" 5 100"
 ```
 
+### Advanced Custom Effects
+
+The library provides advanced effect classes for complex custom lighting sequences:
+
+**Color Fade Effect** - Smooth color transitions over time:
+```java
+// Fade from red to blue over 10 seconds
+ColorFadeEffect.builder()
+    .light(light)
+    .fromColor(Color.of(255, 0, 0))
+    .toColor(Color.of(0, 0, 255))
+    .duration(Duration.ofSeconds(10))
+    .build()
+    .start();
+```
+
+**Heartbeat Effect** - Realistic heartbeat pulsing pattern:
+```java
+// Pulse like a heartbeat
+HeartbeatEffect.builder()
+    .light(light)
+    .minBrightness(10)
+    .maxBrightness(100)
+    .beatCount(10)
+    .build()
+    .start();
+```
+
+**Sunrise Simulation** - Natural sunrise with color progression:
+```java
+// 20-minute wake-up sunrise
+SunriseEffect.builder()
+    .light(light)
+    .duration(Duration.ofMinutes(20))
+    .startBrightness(1)
+    .endBrightness(100)
+    .build()
+    .start();
+```
+
+See [EFFECTS_GUIDE.md](EFFECTS_GUIDE.md) for detailed examples and use cases.
+
 ### Native Philips Hue v2 Effects
 
 The library supports all native Philips Hue Bridge v2 API effects. These effects run continuously on the light until stopped:

@@ -270,6 +270,164 @@ light.setState(new UpdateState()
     .sunrise(Duration.ofMinutes(20)));
 ```
 
+## Advanced Custom Effects
+
+The library provides advanced effect classes for complex, custom lighting sequences that go beyond simple flashing or native effects.
+
+### Color Fade Effect
+
+Smoothly transition from one color to another over a specified duration.
+
+```java
+import io.github.greenstevester.heuvana.v2.ColorFadeEffect;
+import java.time.Duration;
+
+// Fade from red to blue over 10 seconds
+ColorFadeEffect.builder()
+    .light(light)
+    .fromColor(Color.of(255, 0, 0))  // Red
+    .toColor(Color.of(0, 0, 255))    // Blue
+    .duration(Duration.ofSeconds(10))
+    .steps(50)  // Number of intermediate colors (higher = smoother)
+    .build()
+    .start();
+
+// Create a custom sunset effect
+ColorFadeEffect.builder()
+    .light(light)
+    .fromColor(Color.of(255, 220, 150))  // Bright daylight
+    .toColor(Color.of(80, 20, 0))        // Deep red
+    .duration(Duration.ofMinutes(5))
+    .build()
+    .start();
+```
+
+**Use cases:**
+- Gradual mood transitions
+- Sunset/sunrise simulations
+- Color-based timers (e.g., green to red as time runs out)
+- Ambient background effects for movies/games
+
+### Heartbeat Effect
+
+Create a realistic heartbeat pulsing pattern with two quick beats followed by a longer pause.
+
+```java
+import io.github.greenstevester.heuvana.v2.HeartbeatEffect;
+import java.time.Duration;
+
+// Simple heartbeat effect
+HeartbeatEffect.builder()
+    .light(light)
+    .minBrightness(10)
+    .maxBrightness(100)
+    .beatCount(10)  // Number of heartbeat cycles
+    .build()
+    .start();
+
+// Customize the heartbeat timing
+HeartbeatEffect.builder()
+    .light(light)
+    .minBrightness(20)
+    .maxBrightness(80)
+    .beatDuration(Duration.ofMillis(200))        // Quick beat
+    .pauseBetweenBeats(Duration.ofMillis(150))   // Short pause
+    .pauseBetweenCycles(Duration.ofMillis(600))  // Longer pause
+    .beatCount(Integer.MAX_VALUE)  // Infinite heartbeat
+    .build()
+    .start();
+```
+
+**Use cases:**
+- Meditation/breathing exercises (matches heart rate)
+- Gaming health indicators
+- Ambient effects for thrillers/horror content
+- Notification patterns
+
+### Sunrise Simulation
+
+Create a realistic sunrise simulation that gradually transitions through natural dawn colors and brightens over time.
+
+```java
+import io.github.greenstevester.heuvana.v2.SunriseEffect;
+import java.time.Duration;
+
+// 20-minute wake-up sunrise
+SunriseEffect.builder()
+    .light(light)
+    .duration(Duration.ofMinutes(20))
+    .startBrightness(1)   // Very dim
+    .endBrightness(100)   // Full brightness
+    .build()
+    .start();
+
+// Quick 5-minute morning sunrise
+SunriseEffect.builder()
+    .light(light)
+    .duration(Duration.ofMinutes(5))
+    .steps(60)  // More steps = smoother transition
+    .build()
+    .start();
+```
+
+**The sunrise progresses through these natural colors:**
+1. **Deep red** (pre-dawn) - 80, 20, 0
+2. **Warm orange** (early sunrise) - 200, 80, 0
+3. **Bright orange** (sunrise) - 255, 140, 0
+4. **Warm yellow** (morning light) - 255, 220, 150
+
+**Use cases:**
+- Natural wake-up alarm
+- Circadian rhythm support
+- Photography/video lighting setup
+- Mood enhancement
+
+### Stopping Advanced Effects
+
+All advanced effects can be stopped immediately:
+
+```java
+ColorFadeEffect fadeEffect = ColorFadeEffect.builder()
+    .light(light)
+    .fromColor(Color.RED)
+    .toColor(Color.BLUE)
+    .duration(Duration.ofSeconds(30))
+    .build();
+
+fadeEffect.start();
+
+// Stop it early
+fadeEffect.stop();
+
+// Check if running
+if (fadeEffect.isRunning()) {
+    System.out.println("Effect is still running");
+}
+```
+
+### Chaining Advanced Effects
+
+You can chain effects using completion callbacks:
+
+```java
+// Sunrise followed by color fade
+SunriseEffect.builder()
+    .light(light)
+    .duration(Duration.ofMinutes(10))
+    .onComplete(() -> {
+        // After sunrise, fade to blue for daytime work
+        ColorFadeEffect.builder()
+            .light(light)
+            .fromColor(Color.of(255, 220, 150))  // Morning yellow
+            .toColor(Color.of(200, 220, 255))    // Cool blue
+            .duration(Duration.ofSeconds(30))
+            .build()
+            .start();
+    })
+    .build()
+    .start();
+```
+
 ## Combining with Colors
 
 All effects can be combined with color and brightness settings:
