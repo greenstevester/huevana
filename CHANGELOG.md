@@ -6,6 +6,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+
+5.0.5
+-----
+
+### Added
+
+* Support for all 10 native v2 effect types including candle, fireplace, sparkle, opal, glimmer, sunrise, sunset, and prism effects
+* Advanced custom effect classes for creating complex lighting effects
+* Smooth brightness-based pulsing effect implementation
+* Interactive quick start deployment scripts with security hardening
+* Bridge discovery and setup manual test utilities
+* Convenience script template for QuickStartDemo
+* Comprehensive unit tests for v2 domain classes
+
+### Changed
+
+* Enhanced QuickStartDemo to demonstrate all native v2 effects and comprehensive feature showcase
+* Organized deployment scripts into dedicated scripts/ directory
+* Updated all documentation references to version 5.2.0
+
+### Fixed
+
+* Resource leaks and race conditions in effect classes
+* CI tag existence check on tag push events
+
+5.0.0
+-----
+
+### Added
+
+* Complete support for flashing and pulsing effects
+* Comprehensive GitHub workflows and repository governance features
+* GPG signing configuration for Maven Central deployment
+* Comprehensive Javadoc documentation for core API classes
+* Credential verification to release workflow
+
+### Changed
+
+* **BREAKING**: Upgraded project from Java 8 to Java 17
+* **BREAKING**: Refactored package names to match new project ownership (io.github.greenstevester)
+* Updated WireMock dependency to new coordinates
+* Updated OSSRH URLs to new infrastructure
+* Improved README for publication readiness
+
+### Fixed
+
+* Failing tests and security vulnerabilities
+* Quality profile issues and standardized build configuration
+* GPG signing during CI integration tests
+* Deprecated gpg.passphrase parameter in release workflow
+* Critical PR review issues and enhanced CI/CD pipeline
+
 3.0.0-RC (unpublished)
 ----------------------
 
